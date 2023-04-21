@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OPBOoks</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Politicas de uso</a></li>
+                <li><a href="#">Quienes somos</a></li>
+                <li><a href="#">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% load static}
+    <main>
+        <h1>Opiniones de libros</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" required><br><br>
+            <label for="apellido">Apellido:</label>
+            <input type="text" name="apellido" required><br><br>
+            <label for="libro">Libro:</label>
+            <input type="text" name="libro" required><br><br>
+            <label for="opinion">Opinion:</label>
+            <textarea name="opinion" required></textarea><br><br>
+            <input type="submit" value="Publicar opinión">
+        </form>
+        <hr>
+        {% if opiniones %}
+        <h2>Opiniones publicadas</h2>
+        <ul>
+            {% for opinion in opiniones %}
+            <li>
+                <p><strong>Nombre:</strong> {{ opinion.nombre }} {{ opinion.apellido }}</p>
+                <p><strong>Libro:</strong> {{ opinion.libro }}</p>
+                <p><strong>Opinión:</strong> {{ opinion.opinion }}</p>
+                <form method="post" action="{% url 'editar_opinion' opinion.id %}">
+                    {% csrf_token %}
+                    <label for="opinion_editada">Editar opinión:</label>
+                    <textarea name="opinion_editada" required>{{ opinion.opinion }}</textarea>
+                    <input type="submit" value="Guardar cambios">
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </main>
+</body>
+</html>
