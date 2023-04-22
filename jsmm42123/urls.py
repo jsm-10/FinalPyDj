@@ -15,13 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from OPBOoks.views import index, editar_opinion, eliminar_opinion, busqueda
+from OPBOoks.views import IndexView, BusquedaView, EliminarOpinionView, EditarOpinionView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('editar_opinion/<int:id>/', editar_opinion, name='editar_opinion'),
-    path('opinion/<int:id>/eliminar/', eliminar_opinion, name='eliminar_opinion'),
-    path('busqueda/', busqueda, name='busqueda'),
-
+    path('', IndexView.as_view(), name='index'),
+    path('busqueda/', BusquedaView.as_view(), name='busqueda'),
+    path('eliminar/<int:pk>/', EliminarOpinionView.as_view(), name='eliminar_opinion'),
+    path('editar/<int:pk>/', EditarOpinionView.as_view(), name='editar_opinion'),
 ]
