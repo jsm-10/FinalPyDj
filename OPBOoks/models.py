@@ -5,4 +5,4 @@ class Opinion(models.Model):
     apellido = models.CharField(max_length=100)
     libro = models.CharField(max_length=100)
     opinion = models.TextField()
-# Create your models here.
+

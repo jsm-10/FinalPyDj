@@ -1,0 +1,44 @@
+
+
+/* Navbar */
+.navbar {
+    background-color: #f8f8f8;
+    box-shadow: none;
+  }
+  
+  .navbar-brand {
+    color: #6e6e6e;
+  }
+  
+  .navbar-toggler {
+    border-color: #6e6e6e;
+  }
+  
+  .nav-link {
+    color: #6e6e6e;
+  }
+  
+  .nav-link:hover {
+    color: #4a4a4a;
+  }
+  
+  /* Main content */
+  .container {
+    padding-top: 2rem;
+  }
+ 
+.fa {
+    cursor: pointer;
+  }
+  
+ 
+  #editar-opinion {
+    display: none; 
+    margin-left: 10px;
+  }
+  
+  
+  #form-editar-opinion {
+    display: none; /* Lo ocultamos por defecto */
+  }
+  
