@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from OPBOoks.views import IndexView, BusquedaView, EliminarOpinionView, EditarOpinionView
+from OPBOoks.views import IndexView, BusquedaView, EliminarOpinionView, EditarOpinionView, login_request, logout_request, register
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('busqueda/', BusquedaView.as_view(), name='busqueda'),
     path('eliminar/<int:pk>/', EliminarOpinionView.as_view(), name='eliminar_opinion'),
     path('editar/<int:pk>/', EditarOpinionView.as_view(), name='editar_opinion'),
+    path('login', login_request, name= 'login'),
+    path('logout/', logout_request, name='logout'),
+    path('register/', register, name='register'),
 ]

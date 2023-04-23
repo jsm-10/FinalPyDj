@@ -1,17 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'OPBooks/base.html' %}
 
 {% block contenido %}
     <h1 class="mb-4">Opiniones de libros</h1>
+    {% if user.is_authenticated %}
+        <p>Publicando opinión como {{ user.first_name }} {{ user.last_name }}</p>
+    {% else %}
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" name="nombre" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido:</label>
+                <input type="text" name="apellido" class="form-control" required>
+            </div>
+        </form>
+    {% endif %}
     <form method="post" class="mb-4">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre:</label>
-            <input type="text" name="nombre" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="apellido" class="form-label">Apellido:</label>
-            <input type="text" name="apellido" class="form-control" required>
-        </div>
         <div class="mb-3">
             <label for="libro" class="form-label">Libro:</label>
             <input type="text" name="libro" class="form-control" required>
@@ -24,34 +31,37 @@
     </form>
     <hr>
     {% if opiniones %}
-    <h2 class="mb-4">Opiniones publicadas</h2>
-    <ul class="list-unstyled">
-        {% for opinion in opiniones %}
-        <li class="mb-4">
-            <div class="card p-3">
-                <div class="card-body">
-                    <p class="card-text"><strong>Nombre:</strong> {{ opinion.nombre }} {{ opinion.apellido }}</p>
-                    <p class="card-text"><strong>Libro:</strong> {{ opinion.libro }}</p>
-                    <p class="card-text"><strong>Opinión:</strong> {{ opinion.opinion }}</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <form method="post" action="{% url 'editar_opinion' opinion.id %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="opinion_editada" class="form-label">Editar opinión:</label>
-                            <textarea name="opinion_editada" class="form-control" required>{{ opinion.opinion }}</textarea>
+        <h2 class="mb-4">Opiniones publicadas</h2>
+        <ul class="list-unstyled">
+            {% for opinion in opiniones %}
+                <li class="mb-4">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Nombre:</strong> {{ opinion.usuario.first_name }} {{ opinion.usuario.last_name }}</p>
+                            <p class="card-text"><strong>Libro:</strong> {{ opinion.libro }}</p>
+                            <p class="card-text"><strong>Opinión:</strong> {{ opinion.opinion }}</p>
                         </div>
-                        <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
-                    </form>
-                    <form method="post" action="{% url 'eliminar_opinion' opinion.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger ms-2">Eliminar opinión</button>
-                    </form>
-                </div>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+                        <div class="card-footer d-flex justify-content-between">
+                            {% if user.is_authenticated and user == opinion.usuario %}
+                                <form method="post" action="{% url 'editar_opinion' opinion.id %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="opinion_editada" class="form-label">Editar opinión:</label>
+                                        <textarea name="opinion_editada" class="form-control" required>{{ opinion.opinion }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
+                                </form>
+                                <form method="post" action="{% url 'eliminar_opinion' opinion.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger ms-2">Eliminar opinión</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endblock %}
+
